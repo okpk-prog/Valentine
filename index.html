@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jo  Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Comic Sans MS', 'Segoe UI', cursive;
+    overflow: hidden;
+}
+
+.container {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    width: 90%;
+    max-width: 420px;
+}
+
+h1 {
+    color: #ff4d6d;
+}
+
+#countdown {
+    font-size: 48px;
+    color: #ff4d6d;
+    margin-bottom: 15px;
+}
+
+img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    position: relative;
+    height: 120px;
+}
+
+button {
+    padding: 12px 28px;
+    font-size: 18px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    background: #ddd;
+    position: absolute;
+}
+
+#mainContent, #celebration {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="bgMusic" src="bg-music.mp3" loop></audio>
+<audio id="noSound" src="no-sound.mp3"></audio>
+<audio id="yesSound" src="yes-sound.mp3"></audio>
+
+<div class="container">
+
+    <!-- COUNTDOWN -->
+    <div id="countdown">3</div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent">
+        <h1>Jo  Will you be my Valentine?</h1>
+        <img id="mainGif" src="proposal.gif">
+        <div class="buttons">
+            <button id="yesBtn">YES </button>
+            <button id="noBtn">NO </button>
+        </div>
+    </div>
+
+    <!-- CELEBRATION -->
+    <div id="celebration">
+        <h1>YAYYYY </h1>
+        <img src="celebration.gif">
+    </div>
+
+</div>
+
+<script>
+const countdownEl = document.getElementById("countdown");
+const mainContent = document.getElementById("mainContent");
+const celebration = document.getElementById("celebration");
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+const bgMusic = document.getElementById("bgMusic");
+const noSound = document.getElementById("noSound");
+const yesSound = document.getElementById("yesSound");
+
+// Start background music on first interaction
+document.body.addEventListener("click", () => {
+    bgMusic.play().catch(()=>{});
+}, { once: true });
+
+// COUNTDOWN
+let count = 3;
+const timer = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+    if (count === 0) {
+        clearInterval(timer);
+        countdownEl.style.display = "none";
+        mainContent.style.display = "block";
+    }
+}, 1000);
+
+// NO button runs away
+noBtn.addEventListener("mouseover", () => {
+    noSound.currentTime = 0;
+    noSound.play();
+
+    noBtn.style.left = Math.random() * 260 + "px";
+    noBtn.style.top = Math.random() * 90 + "px";
+});
+
+// YES clicked
+yesBtn.addEventListener("click", () => {
+    yesSound.play();
+    bgMusic.volume = 0.4;
+
+    mainContent.style.display = "none";
+    celebration.style.display = "block";
+
+    //  GOOGLE FORM NOTIFICATION
+    fetch("https://docs.google.com/forms/d/e/1FAIpQLSd0XgUrqWBpi5k8k4axXBzKedCORLv0drREtL-24TjPrMITNA/viewform?usp=pp_url&entry.1911564733=Yes+%E2%9D%A4%EF%B8%8F+", {
+        method: "POST",
+        mode: "no-cors"
+    });
+});
+</script>
+
+</body>
+</html>
